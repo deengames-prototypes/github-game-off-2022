@@ -1,6 +1,6 @@
 extends Node2D
 
-const PlayerController = preload("res://contexts/core/servers/PlayerController.gd")
+const PlayerController = preload("res://contexts/core/scripts/systems/PlayerController.gd")
 
 onready var _entities_tile_map = $Entities
 onready var _terrain_tile_map = $Terrain

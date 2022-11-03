@@ -1,6 +1,6 @@
 extends Node
 
-const InputSystem = preload("res://contexts/core/servers/InputSystem.gd")
+const InputSystem = preload("res://contexts/core/scripts/systems/InputSystem.gd")
 
 signal player_moved(new_tile_position)
 

@@ -14,7 +14,7 @@ func _on_OptionsButton_pressed() -> void:
 	options_dialog.popup()
 
 func _on_NewGameButton_pressed():
-	SceneManager.change_scene_to(load("res://contexts/core/DungeonLevelScene.tscn"), "circle")
+	SceneManager.change_scene_to(load("res://contexts/core/scenes/DungeonLevelScene.tscn"), "circle")
 
 func _on_ContinueButton_pressed():
 	pass # Replace with function body.
