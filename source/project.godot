@@ -13,9 +13,15 @@ _global_script_classes=[ {
 "class": "Player",
 "language": "GDScript",
 "path": "res://contexts/core/entities/Player.gd"
+}, {
+"base": "Reference",
+"class": "TileUtils",
+"language": "GDScript",
+"path": "res://contexts/core/TileUtils.gd"
 } ]
 _global_script_class_icons={
-"Player": ""
+"Player": "",
+"TileUtils": ""
 }
 
 [application]

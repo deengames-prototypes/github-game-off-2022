@@ -30,16 +30,6 @@ func on_player_moved(old: Vector2, new: Vector2):
 	_entities_tile_map.set_cellv(new, _entities_by_name["player"])
 
 func on_move_player(displacement: Vector2):
-	if is_walkable(_player.tile_position + displacement, [_player]):
+	if TileUtils.is_walkable(_player.tile_position + displacement, _terrain_tile_map, [_player]):
 		emit_signal("move_player", displacement)
-
-func is_walkable(tile_position: Vector2, all_entities: Array) -> bool:
-	var tile_id = _terrain_tile_map.get_cellv(tile_position)
-	var tile_name = _terrain_tile_map.tile_set.tile_get_name(tile_id)
-	if tile_name == "wall":
-		return false
-	for e in all_entities:
-		if e.tile_position == tile_position:
-			return false
-	return true
 
