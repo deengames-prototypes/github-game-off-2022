@@ -26,7 +26,7 @@ _global_script_class_icons={
 
 [application]
 
-config/name="Turbo"
+config/name="Cliched Dungeon Crawler"
 run/main_scene="res://contexts/pregame/scenes/GameLoaderScene.tscn"
 config/icon="res://icon.png"
 
