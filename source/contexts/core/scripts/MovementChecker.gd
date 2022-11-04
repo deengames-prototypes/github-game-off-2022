@@ -1,4 +1,4 @@
-class_name TileUtils
+class_name MovementCheck
 
 const _UNWALKABLE_TILE_NAMES = ["wall"]
 

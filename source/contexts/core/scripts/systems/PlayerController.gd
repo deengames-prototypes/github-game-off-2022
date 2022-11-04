@@ -25,6 +25,6 @@ func on_move_player(displacement:Vector2):
 	var old_tile_position = _player.tile_position
 	var new_tile_position = old_tile_position + displacement
 
-	if TileUtils.is_walkable(_terrain_tile_map, new_tile_position, _all_entities):
+	if MovementCheck.is_walkable(_terrain_tile_map, new_tile_position, _all_entities):
 		emit_signal("player_moved", old_tile_position, new_tile_position)
 
