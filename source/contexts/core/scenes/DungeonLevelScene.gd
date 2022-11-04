@@ -9,6 +9,7 @@ onready var _player_controller = PlayerController.new(_player, _terrain_tile_map
 
 var _entities_by_name = {}
 var _player:Player = Player.new()
+var _monsters = []
 
 func _ready():
 	_player_controller.connect("player_moved", self, "on_player_moved")
@@ -19,6 +20,12 @@ func _ready():
 
 	_player.tile_position = Vector2(9, 8)
 	_entities_tile_map.set_cellv(_player.tile_position, _entities_by_name["player"])
+
+	for i in range(4):
+		var monster = Slime.new()
+		monster.tile_position = Vector2(11, 8 + i)
+		_monsters.append(monster)
+		_entities_tile_map.set_cellv(monster.tile_position, _entities_by_name["slime"])
 
 func on_player_moved(old_tile_position: Vector2, new_tile_position: Vector2):
 	_player.tile_position = new_tile_position
