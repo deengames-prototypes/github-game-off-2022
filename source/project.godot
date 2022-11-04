@@ -12,7 +12,7 @@ _global_script_classes=[ {
 "base": "Resource",
 "class": "Player",
 "language": "GDScript",
-"path": "res://contexts/core/scenes/entities/Player.gd"
+"path": "res://contexts/core/entities/Player.gd"
 }, {
 "base": "Reference",
 "class": "TileUtils",
