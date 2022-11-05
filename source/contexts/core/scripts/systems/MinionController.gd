@@ -11,7 +11,7 @@ func _init(player:Player, terrain_tile_map:TileMap, all_entities:Array):
 	_terrain_tile_map = terrain_tile_map
 	_all_entities = all_entities
 
-func on_player_moved(_old, _new):
+func on_player_moved(_entity, _old, _new):
 	for entity in _all_entities:
 		if entity is Minion:
 			take_turn(entity)

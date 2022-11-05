@@ -2,7 +2,7 @@ extends Node
 
 const InputSystem = preload("res://contexts/core/scripts/systems/InputSystem.gd")
 
-signal player_moved(old_tile_position, new_tile_position)
+signal player_moved(player, old_tile_position, new_tile_position)
 
 var _input_system = InputSystem.new()
 var _player:Player
@@ -26,5 +26,5 @@ func on_move_player(displacement:Vector2):
 	var new_tile_position = old_tile_position + displacement
 
 	if MovementCheck.is_walkable(_terrain_tile_map, new_tile_position, _all_entities):
-		emit_signal("player_moved", old_tile_position, new_tile_position)
+		emit_signal("player_moved", _player, old_tile_position, new_tile_position)
 

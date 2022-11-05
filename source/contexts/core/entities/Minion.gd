@@ -2,6 +2,7 @@ class_name Minion
 
 extends Resource
 
+const name := 'minion'
 enum {FOLLOWING, ATTACKING, IDLE}
 
 var state = FOLLOWING
