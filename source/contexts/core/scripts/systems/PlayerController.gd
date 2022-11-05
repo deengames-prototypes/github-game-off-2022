@@ -2,7 +2,7 @@ extends Node
 
 const InputSystem = preload("res://contexts/core/scripts/systems/InputSystem.gd")
 
-signal player_moved(new_tile_position)
+signal player_moved(old_tile_position, new_tile_position)
 
 var _input_system = InputSystem.new()
 var _player:Player
