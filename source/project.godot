@@ -9,6 +9,11 @@
 config_version=4
 
 _global_script_classes=[ {
+"base": "Resource",
+"class": "Minion",
+"language": "GDScript",
+"path": "res://contexts/core/entities/Minion.gd"
+}, {
 "base": "Reference",
 "class": "MovementCheck",
 "language": "GDScript",
@@ -25,6 +30,7 @@ _global_script_classes=[ {
 "path": "res://contexts/core/entities/Slime.gd"
 } ]
 _global_script_class_icons={
+"Minion": "",
 "MovementCheck": "",
 "Player": "",
 "Slime": ""

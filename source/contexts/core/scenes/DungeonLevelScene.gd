@@ -26,6 +26,11 @@ func _ready():
 		slime.tile_position = Vector2(11, 8 + i)
 		_entities.append(slime)
 		_entities_tile_map.set_cellv(slime.tile_position, _entities_by_name["slime"])
+	
+	var minion = Minion.new()
+	minion.tile_position = Vector2(8, 8)
+	_entities_tile_map.set_cellv(minion.tile_position, _entities_by_name["minion"])
+	_entities.append(minion)
 
 func on_player_moved(old_tile_position: Vector2, new_tile_position: Vector2):
 	_player.tile_position = new_tile_position
