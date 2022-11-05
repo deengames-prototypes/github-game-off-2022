@@ -14,6 +14,7 @@ var _player:Player = Player.new()
 var _entities:Array = [_player]
 
 func _ready():
+	# Wire up signals
 	_player_controller.connect("player_moved", self, "on_entity_moved")
 	add_child(_player_controller)
 
@@ -21,18 +22,21 @@ func _ready():
 	_minion_controller.connect("minion_moved", self, "on_entity_moved")
 	add_child(_minion_controller)
 
+	# Draw entities on the tile map
 	for tile_id in _entities_tile_map.tile_set.get_tiles_ids():
 		_entities_by_name[_entities_tile_map.tile_set.tile_get_name(tile_id)] = tile_id
 
 	_player.tile_position = Vector2(9, 8)
 	_entities_tile_map.set_cellv(_player.tile_position, _entities_by_name[_player.name])
 
+	# Generate some slimes to kill
 	for i in range(4):
 		var slime = Slime.new()
 		slime.tile_position = Vector2(11, 8 + i)
 		_entities.append(slime)
 		_entities_tile_map.set_cellv(slime.tile_position, _entities_by_name[slime.name])
 	
+	# Add the first (test) minion to follow the player around
 	var minion = Minion.new()
 	minion.tile_position = Vector2(8, 8)
 	_entities_tile_map.set_cellv(minion.tile_position, _entities_by_name[minion.name])

@@ -2,16 +2,16 @@ extends Node
 
 signal minion_moved(minion, old_tile_position, new_tile_position)
 
-var _player:Player
-var _all_entities:Array
-var _terrain_tile_map:TileMap
+var _player: Player
+var _all_entities: Array
+var _terrain_tile_map: TileMap
 
-func _init(player:Player, terrain_tile_map:TileMap, all_entities:Array):
+func _init(player: Player, terrain_tile_map: TileMap, all_entities: Array):
 	_player = player
 	_terrain_tile_map = terrain_tile_map
 	_all_entities = all_entities
 
-func on_player_moved(_entity, _old, _new):
+func on_player_moved(entity, old_position: Vector2, new_position:Vector2):
 	for entity in _all_entities:
 		if entity is Minion:
 			take_turn(entity)
