@@ -2,6 +2,7 @@ extends Node
 
 const ENEMY_DISCOVER_DISTANCE = 5
 const ATTACK_DISTANCE = 2
+const FOLLOWING_DISTANCE = 3
 
 signal minion_moved(minion, old_tile_position, new_tile_position)
 
@@ -38,7 +39,8 @@ func take_turn(minion: Minion):
 # movement
 
 func follow_player(minion: Minion):
-	chase_entity(minion, _player)
+	if minion.tile_position.distance_to(_player.tile_position) >= FOLLOWING_DISTANCE:
+		chase_entity(minion, _player)
 
 func chase_entity(minion: Minion, entity):
 	var direction := minion.tile_position.direction_to(entity.tile_position)
