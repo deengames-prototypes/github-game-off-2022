@@ -46,10 +46,16 @@ func chase_entity(minion: Minion, entity):
 	var direction := minion.tile_position.direction_to(entity.tile_position)
 
 	var displacement: Vector2
-	if direction.aspect() > 0.5:
-		displacement = Vector2.LEFT if direction.x < 0 else Vector2.RIGHT
-	else:
-		displacement = Vector2.UP if direction.y < 0 else Vector2.DOWN
+	var aspect := abs(direction.aspect())
+
+	if direction.x >= 0 and direction.y < 0:
+		displacement = Vector2.RIGHT if aspect >= 1 else Vector2.UP
+	elif direction.x >= 0 and direction.y >= 0:
+		displacement = Vector2.RIGHT if aspect >= 1 else Vector2.DOWN
+	elif direction.x < 0 and direction.y >= 0:
+		displacement = Vector2.LEFT if aspect >= 1 else Vector2.DOWN
+	else: # direction.x < 0 and direction.y < 0
+		displacement = Vector2.LEFT if aspect >= 1 else Vector2.UP
 
 	move_minion(minion, displacement)
 
