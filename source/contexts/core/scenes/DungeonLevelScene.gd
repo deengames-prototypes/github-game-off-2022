@@ -22,6 +22,8 @@ func _ready():
 	_minion_system.connect("minion_moved", self, "on_entity_moved")
 	add_child(_minion_system)
 
+	_minion_system.connect("entity_died", self, "on_entity_died")
+
 	# Draw entities on the tile map
 	for tile_id in _entities_tile_map.tile_set.get_tiles_ids():
 		_entities_by_name[_entities_tile_map.tile_set.tile_get_name(tile_id)] = tile_id
@@ -35,7 +37,7 @@ func _ready():
 		slime.tile_position = Vector2(11, 8 + i)
 		_entities.append(slime)
 		_entities_tile_map.set_cellv(slime.tile_position, _entities_by_name[slime.name])
-	
+
 	# Add the first (test) minion to follow the player around
 	var minion = Minion.new()
 	minion.tile_position = Vector2(8, 8)
@@ -46,3 +48,8 @@ func on_entity_moved(entity, old_tile_position: Vector2, new_tile_position: Vect
 	entity.tile_position = new_tile_position
 	_entities_tile_map.set_cellv(old_tile_position, TileMap.INVALID_CELL)
 	_entities_tile_map.set_cellv(new_tile_position, _entities_by_name[entity.name])
+
+func on_entity_died(entity):
+	_entities.erase(entity)
+	_entities_tile_map.set_cellv(entity.tile_position, TileMap.INVALID_CELL)
+

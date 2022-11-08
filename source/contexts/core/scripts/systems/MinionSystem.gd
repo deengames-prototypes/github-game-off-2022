@@ -4,7 +4,9 @@ const ENEMY_DISCOVER_DISTANCE = 5
 const ATTACK_DISTANCE = 2
 const FOLLOWING_DISTANCE = 3
 
+signal entity_died(entity)
 signal minion_moved(minion, old_tile_position, new_tile_position)
+signal minion_attacks_entity(minion, entity)
 
 var _player: Player
 var _all_entities: Array
@@ -27,20 +29,19 @@ func take_turn(minion: Minion):
 				if is_near_player(enemy):
 					minion.state = minion.ATTACKING
 					minion.target = enemy
+		minion.ATTACKING:
+			if minion.target == null:
+				minion.state = minion.FOLLOWING
+
 
 	match minion.state:
 		minion.FOLLOWING:
-			follow_player(minion)
+			if minion.tile_position.distance_to(_player.tile_position) >= FOLLOWING_DISTANCE:
+				chase_entity(minion, _player)
 		minion.ATTACKING:
 			attack_target(minion)
-		minion.IDLE:
-			pass
 
 # movement
-
-func follow_player(minion: Minion):
-	if minion.tile_position.distance_to(_player.tile_position) >= FOLLOWING_DISTANCE:
-		chase_entity(minion, _player)
 
 func chase_entity(minion: Minion, entity):
 	var direction := minion.tile_position.direction_to(entity.tile_position)
@@ -84,9 +85,7 @@ func attack_target(minion):
 	if minion.tile_position.distance_to(minion.target.tile_position) > ATTACK_DISTANCE:
 		chase_entity(minion, minion.target)
 	else:
-		# TODO: move into own system
 		minion.target.health -= minion.attack
-		print(minion.target.name, minion.target.health)
 		if minion.target.health <= 0:
+			emit_signal("entity_died", minion.target)
 			minion.target = null
-			minion.state = minion.FOLLOWING
