@@ -1,13 +1,13 @@
 extends Node2D
 
 const PlayerController = preload("res://contexts/core/scripts/systems/PlayerController.gd")
-const MinionController = preload("res://contexts/core/scripts/systems/MinionController.gd")
+const MinionSystem = preload("res://contexts/core/scripts/systems/MinionSystem.gd")
 
 onready var _entities_tile_map = $Entities
 onready var _terrain_tile_map = $Terrain
 
 onready var _player_controller = PlayerController.new(_player, _terrain_tile_map, _entities)
-onready var _minion_controller = MinionController.new(_player, _terrain_tile_map, _entities)
+onready var _minion_system = MinionSystem.new(_player, _terrain_tile_map, _entities)
 
 var _entities_by_name:Dictionary = {}
 var _player:Player = Player.new()
@@ -18,9 +18,9 @@ func _ready():
 	_player_controller.connect("player_moved", self, "on_entity_moved")
 	add_child(_player_controller)
 
-	_player_controller.connect("player_moved", _minion_controller, "on_player_moved")
-	_minion_controller.connect("minion_moved", self, "on_entity_moved")
-	add_child(_minion_controller)
+	_player_controller.connect("player_moved", _minion_system, "on_player_moved")
+	_minion_system.connect("minion_moved", self, "on_entity_moved")
+	add_child(_minion_system)
 
 	# Draw entities on the tile map
 	for tile_id in _entities_tile_map.tile_set.get_tiles_ids():
