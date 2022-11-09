@@ -10,7 +10,10 @@ func _init(terrain_tile_map: TileMap, all_entities: Array):
 	_all_entities = all_entities
 
 func on_chase_entity(entity, target):
-	var direction: Vector2 = entity.tile_position.direction_to(target.tile_position)
+	on_move_to(entity, target.tile_position)
+
+func on_move_to(entity, target_tile: Vector2):
+	var direction: Vector2 = entity.tile_position.direction_to(target_tile)
 
 	var displacement: Vector2
 	var aspect := abs(direction.aspect())
