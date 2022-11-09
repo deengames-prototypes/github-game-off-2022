@@ -5,7 +5,7 @@ const ATTACK_DISTANCE = 2
 const FOLLOWING_DISTANCE = 3
 
 signal entity_died(entity)
-signal minion_moved(minion, old_tile_position, new_tile_position)
+signal chase_entity(minion, target)
 signal minion_attacks_entity(minion, entity)
 
 var _player: Player
@@ -37,37 +37,9 @@ func take_turn(minion: Minion):
 	match minion.state:
 		minion.FOLLOWING:
 			if minion.tile_position.distance_to(_player.tile_position) >= FOLLOWING_DISTANCE:
-				chase_entity(minion, _player)
+				emit_signal("chase_entity", minion, _player)
 		minion.ATTACKING:
 			attack_target(minion)
-
-# movement
-
-func chase_entity(minion: Minion, entity):
-	var direction := minion.tile_position.direction_to(entity.tile_position)
-
-	var displacement: Vector2
-	var aspect := abs(direction.aspect())
-
-	if direction.x >= 0 and direction.y < 0:
-		displacement = Vector2.RIGHT if aspect >= 1 else Vector2.UP
-	elif direction.x >= 0 and direction.y >= 0:
-		displacement = Vector2.RIGHT if aspect >= 1 else Vector2.DOWN
-	elif direction.x < 0 and direction.y >= 0:
-		displacement = Vector2.LEFT if aspect >= 1 else Vector2.DOWN
-	else: # direction.x < 0 and direction.y < 0
-		displacement = Vector2.LEFT if aspect >= 1 else Vector2.UP
-
-	move_minion(minion, displacement)
-
-func move_minion(minion: Minion, displacement: Vector2):
-	if displacement.length() > 1:
-		push_error("Minion moved %s tiles, too far" % displacement.length())
-	var old_tile_position = minion.tile_position
-	var new_tile_position = old_tile_position + displacement
-
-	if MovementCheck.is_walkable(_terrain_tile_map, new_tile_position, _all_entities):
-		emit_signal("minion_moved", minion, old_tile_position, new_tile_position)
 
 # attacking
 
@@ -83,7 +55,7 @@ func is_near_player(enemy):
 
 func attack_target(minion):
 	if minion.tile_position.distance_to(minion.target.tile_position) > ATTACK_DISTANCE:
-		chase_entity(minion, minion.target)
+		emit_signal("chase_entity", minion, minion.target)
 	else:
 		minion.target.health -= minion.attack
 		if minion.target.health <= 0:
