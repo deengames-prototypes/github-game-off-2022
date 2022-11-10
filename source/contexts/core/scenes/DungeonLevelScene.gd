@@ -1,8 +1,9 @@
 extends Node2D
 
-const PlayerController = preload("res://contexts/core/scripts/systems/PlayerController.gd")
+const BasicAttackSystem = preload("res://contexts/core/scripts/systems/BasicAttackSystem.gd")
 const MinionSystem = preload("res://contexts/core/scripts/systems/MinionSystem.gd")
 const MovementSystem = preload("res://contexts/core/scripts/systems/MovementSystem.gd")
+const PlayerController = preload("res://contexts/core/scripts/systems/PlayerController.gd")
 
 onready var _entities_tile_map = $Entities
 onready var _terrain_tile_map = $Terrain
@@ -10,6 +11,7 @@ onready var _terrain_tile_map = $Terrain
 onready var _player_controller = PlayerController.new(_player, _terrain_tile_map, _entities)
 onready var _minion_system = MinionSystem.new(_player, _terrain_tile_map, _entities)
 onready var _movement_system = MovementSystem.new(_terrain_tile_map, _entities)
+var _attack_system = BasicAttackSystem.new()
 
 var _player:Player = Player.new()
 var _entities:Array = [_player]
@@ -26,6 +28,7 @@ func _ready():
 
 	_minion_system.connect("chase_entity", _movement_system, "on_chase_entity")
 	_minion_system.connect("entity_died", self, "on_entity_died")
+	_minion_system.connect("attack_target", _attack_system, "attack_target")
 	add_child(_minion_system);
 
 	_player.tile_position = Vector2(9, 8)
@@ -46,4 +49,3 @@ func _ready():
 func on_entity_died(entity):
 	_entities.erase(entity)
 	_entities_tile_map.on_entity_died(entity)
-

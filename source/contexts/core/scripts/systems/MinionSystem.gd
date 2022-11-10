@@ -1,12 +1,13 @@
 extends Node
 
 const ENEMY_DISCOVER_DISTANCE = 5
-const ATTACK_DISTANCE = 2
+const _CHASE_RANGE = 2
 const FOLLOWING_DISTANCE = 3
 const RETREAT_DISTANCE = 7
 
-signal entity_died(entity)
+signal attack_target(minion, target)
 signal chase_entity(minion, target)
+signal entity_died(entity)
 signal minion_attacks_entity(minion, entity)
 
 var _player: Player
@@ -43,7 +44,7 @@ func take_turn(minion: Minion):
 			if minion.tile_position.distance_to(_player.tile_position) >= RETREAT_DISTANCE:
 				minion.state = minion.FOLLOWING
 			else:
-				attack_target(minion)
+				self.try_to_attack_target(minion)
 
 # attacking
 
@@ -57,11 +58,8 @@ func get_enemies_near(minion):
 func is_near_player(enemy):
 	return enemy.tile_position.distance_to(_player.tile_position) <= ENEMY_DISCOVER_DISTANCE
 
-func attack_target(minion):
-	if minion.tile_position.distance_to(minion.target.tile_position) > ATTACK_DISTANCE:
+func try_to_attack_target(minion):
+	if minion.tile_position.distance_to(minion.target.tile_position) > _CHASE_RANGE:
 		emit_signal("chase_entity", minion, minion.target)
 	else:
-		minion.target.health -= minion.attack
-		if minion.target.health <= 0:
-			emit_signal("entity_died", minion.target)
-			minion.target = null
+		emit_signal("attack_target", minion)
