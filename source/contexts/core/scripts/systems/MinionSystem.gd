@@ -9,6 +9,7 @@ signal attack_target(minion, target)
 signal chase_entity(minion, target)
 signal entity_died(entity)
 signal minion_attacks_entity(minion, entity)
+signal bleed(victim)
 
 var _player: Player
 var _all_entities: Array
@@ -49,6 +50,7 @@ func take_turn(minion: Minion):
 # attacking
 
 func get_enemies_near(minion):
+	# TODO: this call is expensive (computationally and algorithmically)
 	var ls := []
 	for entity in _all_entities:
 		if entity is Slime and entity.tile_position.distance_to(minion.tile_position) <= ENEMY_DISCOVER_DISTANCE:
@@ -59,7 +61,14 @@ func is_near_player(enemy):
 	return enemy.tile_position.distance_to(_player.tile_position) <= ENEMY_DISCOVER_DISTANCE
 
 func try_to_attack_target(minion):
+	if minion.target.health <= 0:
+		minion.target = null
+		return
+
 	if minion.tile_position.distance_to(minion.target.tile_position) > _CHASE_RANGE:
 		emit_signal("chase_entity", minion, minion.target)
 	else:
+		############### TODO: REMOVE, for testing only
+		if randf() < 0.5: emit_signal("bleed", minion.target)
+
 		emit_signal("attack_target", minion)
