@@ -5,11 +5,8 @@ const _CHASE_RANGE = 2
 const FOLLOWING_DISTANCE = 3
 const RETREAT_DISTANCE = 7
 
-signal attack_target(minion, target)
 signal chase_entity(minion, target)
-signal entity_died(entity)
-signal minion_attacks_entity(minion, entity)
-signal bleed(victim)
+signal attack_entity(minion, target)
 
 var _player: Player
 var _all_entities: Array
@@ -25,6 +22,11 @@ func on_player_moved(entity, old_position: Vector2, new_position: Vector2):
 		if entity is Minion:
 			take_turn(entity)
 
+func on_entity_died(deceased):
+	for entity in _all_entities:
+		if entity is Minion and entity.target == deceased:
+			entity.target = null
+
 func take_turn(minion: Minion):
 	match minion.state:
 		minion.FOLLOWING:
@@ -33,7 +35,8 @@ func take_turn(minion: Minion):
 					minion.state = minion.ATTACKING
 					minion.target = enemy
 		minion.ATTACKING:
-			if minion.target == null:
+			if (minion.target == null
+			or minion.tile_position.distance_to(_player.tile_position) >= RETREAT_DISTANCE):
 				minion.state = minion.FOLLOWING
 
 
@@ -42,10 +45,7 @@ func take_turn(minion: Minion):
 			if minion.tile_position.distance_to(_player.tile_position) >= FOLLOWING_DISTANCE:
 				emit_signal("chase_entity", minion, _player)
 		minion.ATTACKING:
-			if minion.tile_position.distance_to(_player.tile_position) >= RETREAT_DISTANCE:
-				minion.state = minion.FOLLOWING
-			else:
-				self.try_to_attack_target(minion)
+			self.try_to_attack_target(minion)
 
 # attacking
 
@@ -61,14 +61,7 @@ func is_near_player(enemy):
 	return enemy.tile_position.distance_to(_player.tile_position) <= ENEMY_DISCOVER_DISTANCE
 
 func try_to_attack_target(minion):
-	if minion.target.health <= 0:
-		minion.target = null
-		return
-
 	if minion.tile_position.distance_to(minion.target.tile_position) > _CHASE_RANGE:
 		emit_signal("chase_entity", minion, minion.target)
 	else:
-		############### TODO: REMOVE, for testing only
-		if randf() < 0.5: emit_signal("bleed", minion.target)
-
-		emit_signal("attack_target", minion)
+		emit_signal("attack_entity", minion, minion.target)

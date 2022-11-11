@@ -1,7 +1,6 @@
 extends Node2D
 
-const BasicAttackSystem = preload("res://contexts/core/scripts/systems/BasicAttackSystem.gd")
-const BleedingSystem = preload("res://contexts/core/scripts/systems/skills/BleedingSystem.gd")
+const AttackSystem = preload("res://contexts/core/scripts/systems/AttackSystem.gd")
 const MinionSystem = preload("res://contexts/core/scripts/systems/MinionSystem.gd")
 const MovementSystem = preload("res://contexts/core/scripts/systems/MovementSystem.gd")
 const PlayerController = preload("res://contexts/core/scripts/systems/PlayerController.gd")
@@ -13,12 +12,10 @@ onready var _player_controller = PlayerController.new(_player, _terrain_tile_map
 onready var _minion_system = MinionSystem.new(_player, _terrain_tile_map, _entities)
 onready var _movement_system = MovementSystem.new(_terrain_tile_map, _entities)
 
-# This ... is starting to get messy
-var _attack_system = BasicAttackSystem.new()
-var _bleeding_system = BleedingSystem.new()
+var _attack_system = AttackSystem.new()
 
-var _player:Player = Player.new()
-var _entities:Array = [_player]
+var _player: Player = Player.new()
+var _entities: Array = [_player]
 
 func _ready():
 	_wire_up_signals()
@@ -38,16 +35,15 @@ func _ready():
 
 	_entities_tile_map.draw_entities(_entities)
 
-func on_entity_died(entity):
-	_entities.erase(entity)
-	_entities_tile_map.on_entity_died(entity)
-
 func _wire_up_signals():
 	# Player controller
-	_player_controller.connect("player_moved", _bleeding_system, "on_player_moved")
 	_player_controller.connect("player_moved", _entities_tile_map, "on_entity_moved")
 	_player_controller.connect("player_moved", _minion_system, "on_player_moved")
+	_player_controller.connect("player_moved", _attack_system, "on_player_moved")
 	add_child(_player_controller)
+
+	# attack system
+	_attack_system.connect("entity_died", self, "on_entity_died")
 
 	# Movement system
 	_movement_system.connect("entity_moved", _entities_tile_map, "on_entity_moved")
@@ -55,10 +51,10 @@ func _wire_up_signals():
 	add_child(_movement_system)
 
 	# Minion system
-	_minion_system.connect("entity_died", self, "on_entity_died")
-	_minion_system.connect("attack_target", _attack_system, "attack_target")
-	_minion_system.connect("bleed", _bleeding_system, "add_bleeding")
+	_minion_system.connect("attack_entity", _attack_system, "on_attack_entity")
+	_attack_system.connect("entity_died", _minion_system, "on_entity_died")
 	add_child(_minion_system);
-	
-	# Attack system
-	_attack_system.connect("on_attack", _bleeding_system, "on_attack")
+
+func on_entity_died(entity):
+	_entities.erase(entity)
+	_entities_tile_map.on_entity_died(entity)
