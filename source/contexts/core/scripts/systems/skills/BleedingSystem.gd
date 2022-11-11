@@ -17,7 +17,7 @@ func on_player_moved(player: Player, old_tile_position: Vector2, new_tile_positi
 		_bleeding_turns_left[victim] -= 1
 		if _bleeding_turns_left[victim] <= 0:
 			to_remove.append(victim)
-	
+
 	for victim in to_remove:
 		_bleeding_turns_left.erase(victim)
 
@@ -26,10 +26,10 @@ func attack_target(minion: Minion, damage: int) -> int:
 	var victim = minion.target
 	if victim == null:
 		return damage
-		
+
 	if not victim in _bleeding_turns_left or _bleeding_turns_left[victim] == 0 or \
 	victim.health <= 0:
 		return damage
-	
+
 	var bleeding_damage = int(damage * _BLEEDING_DAMAGE_PERCENT)
 	return damage + bleeding_damage

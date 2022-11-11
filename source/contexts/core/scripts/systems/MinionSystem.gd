@@ -7,8 +7,6 @@ const RETREAT_DISTANCE = 7
 
 signal attack_target(minion, target)
 signal chase_entity(minion, target)
-signal entity_died(entity)
-signal minion_attacks_entity(minion, entity)
 signal bleed(victim)
 
 var _player: Player
