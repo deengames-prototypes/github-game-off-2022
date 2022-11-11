@@ -51,7 +51,8 @@ func _wire_up_signals():
 	add_child(_movement_system)
 
 	# Minion system
-	_minion_system.connect("attack_target", _attack_system, "on_attack_target")
+	_minion_system.connect("attack_entity", _attack_system, "on_attack_entity")
+	_attack_system.connect("entity_died", _minion_system, "on_entity_died")
 	add_child(_minion_system);
 
 func on_entity_died(entity):
