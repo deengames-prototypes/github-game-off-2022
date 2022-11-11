@@ -61,10 +61,6 @@ func is_near_player(enemy):
 	return enemy.tile_position.distance_to(_player.tile_position) <= ENEMY_DISCOVER_DISTANCE
 
 func try_to_attack_target(minion):
-	if minion.target.health <= 0:
-		minion.target = null
-		return
-
 	if minion.tile_position.distance_to(minion.target.tile_position) > _CHASE_RANGE:
 		emit_signal("chase_entity", minion, minion.target)
 	else:

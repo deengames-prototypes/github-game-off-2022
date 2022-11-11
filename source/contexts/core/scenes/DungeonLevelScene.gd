@@ -17,6 +17,11 @@ onready var _movement_system = MovementSystem.new(_terrain_tile_map, _entities)
 var _attack_system = BasicAttackSystem.new()
 var _bleeding_system = BleedingSystem.new()
 
+# Order matters
+var _attack_systems = [
+	_attack_system, _bleeding_system
+]
+
 var _player:Player = Player.new()
 var _entities:Array = [_player]
 
@@ -38,13 +43,11 @@ func _ready():
 
 	_entities_tile_map.draw_entities(_entities)
 
-func on_entity_died(entity):
-	_entities.erase(entity)
-	_entities_tile_map.on_entity_died(entity)
-
 func _wire_up_signals():
 	# Player controller
-	_player_controller.connect("player_moved", _bleeding_system, "on_player_moved")
+	for system in _attack_systems:
+		_player_controller.connect("player_moved", system, "on_player_moved")
+		
 	_player_controller.connect("player_moved", _entities_tile_map, "on_entity_moved")
 	_player_controller.connect("player_moved", _minion_system, "on_player_moved")
 	add_child(_player_controller)
@@ -56,9 +59,23 @@ func _wire_up_signals():
 
 	# Minion system
 	_minion_system.connect("entity_died", self, "on_entity_died")
-	_minion_system.connect("attack_target", _attack_system, "attack_target")
+	_minion_system.connect("attack_target", self, "_on_attack_target")
+	# message from minion to apply bleeding
 	_minion_system.connect("bleed", _bleeding_system, "add_bleeding")
 	add_child(_minion_system);
+
+func _on_attack_target(minion: Minion):
+	var damage = 0
 	
-	# Attack system
-	_attack_system.connect("on_attack", _bleeding_system, "on_attack")
+	# Every system gets a "damage incoming" event (sorta) and can decide how to react or modify it
+	for system in _attack_systems:
+		damage = system.attack_target(minion, damage)
+	
+	minion.target.health -= damage
+	
+	if minion.target.health <= 0:
+		emit_signal("entity_died", minion.target)
+		_entities.erase(minion.target)
+		_entities_tile_map.on_entity_died(minion.target)
+		minion.target = null
+		
