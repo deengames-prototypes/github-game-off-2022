@@ -7,7 +7,6 @@ const RETREAT_DISTANCE = 7
 
 signal attack_target(minion, target)
 signal chase_entity(minion, target)
-signal bleed(victim)
 
 var _player: Player
 var _all_entities: Array
@@ -62,7 +61,4 @@ func try_to_attack_target(minion):
 	if minion.tile_position.distance_to(minion.target.tile_position) > _CHASE_RANGE:
 		emit_signal("chase_entity", minion, minion.target)
 	else:
-		############### TODO: REMOVE, for testing only
-		if randf() < 0.5: emit_signal("bleed", minion.target)
-
 		emit_signal("attack_target", minion)

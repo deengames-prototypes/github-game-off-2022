@@ -1,4 +1,4 @@
-extends Node
+extends Reference
 
 # Bleeding entities take extra damage for a few turns
 const _BLEEDING_DAMAGE_PERCENT: float = 0.3 # 0.3 => 30% more damage
@@ -23,6 +23,9 @@ func on_player_moved(player: Player, old_tile_position: Vector2, new_tile_positi
 
 # TODO: base class victim (not slime)
 func attack_target(minion: Minion, damage: int) -> int:
+	############### TODO: REMOVE, for testing only
+	if randf() < 0.5: add_bleeding(minion.target)
+	
 	var victim = minion.target
 	if victim == null:
 		return damage
