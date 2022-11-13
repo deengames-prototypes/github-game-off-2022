@@ -14,10 +14,15 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://contexts/core/entities/Entity.gd"
 }, {
+"base": "Minion",
+"class": "MeleeMinion",
+"language": "GDScript",
+"path": "res://contexts/core/entities/minions/MeleeMinion.gd"
+}, {
 "base": "Entity",
 "class": "Minion",
 "language": "GDScript",
-"path": "res://contexts/core/entities/Minion.gd"
+"path": "res://contexts/core/entities/minions/Minion.gd"
 }, {
 "base": "Reference",
 "class": "MovementCheck",
@@ -29,6 +34,11 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://contexts/core/entities/Player.gd"
 }, {
+"base": "Minion",
+"class": "RangedMinion",
+"language": "GDScript",
+"path": "res://contexts/core/entities/minions/RangedMinion.gd"
+}, {
 "base": "Entity",
 "class": "Slime",
 "language": "GDScript",
@@ -36,9 +46,11 @@ _global_script_classes=[ {
 } ]
 _global_script_class_icons={
 "Entity": "",
+"MeleeMinion": "",
 "Minion": "",
 "MovementCheck": "",
 "Player": "",
+"RangedMinion": "",
 "Slime": ""
 }
 

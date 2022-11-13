@@ -1,7 +1,5 @@
 extends Node
 
-
-
 signal chase_entity(minion, target)
 signal attack_entity(minion, target)
 
