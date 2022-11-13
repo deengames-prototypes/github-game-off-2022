@@ -14,7 +14,7 @@ func on_player_moved(player: Player, old_position: Vector2, new_position: Vector
 		filter.on_player_moved(player, old_position, new_position)
 
 
-func on_attack_entity(aggressor, victim):
+func on_attack_entity(aggressor: Entity, victim: Entity):
 	var damage = aggressor.attack
 	#print("Attacking for %s damage ..." % damage)
 

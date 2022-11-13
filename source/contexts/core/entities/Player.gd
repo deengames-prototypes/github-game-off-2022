@@ -1,8 +1,8 @@
 class_name Player
 
-extends Resource
+extends Entity
 
-const name := 'player'
-
-var health: int = 10
-var tile_position: Vector2 = Vector2()
+func _init(x: int, y: int):
+	name = 'player'
+	health = 10
+	tile_position = Vector2(x, y)

@@ -11,10 +11,10 @@ func draw_entities(entities: Array):
 	for entity in entities:
 		set_cellv(entity.tile_position, entities_by_name[entity.name])
 
-func on_entity_moved(entity, old_tile_position: Vector2, new_tile_position: Vector2):
+func on_entity_moved(entity: Entity, old_tile_position: Vector2, new_tile_position: Vector2):
 	entity.tile_position = new_tile_position
 	set_cellv(old_tile_position, TileMap.INVALID_CELL)
 	set_cellv(new_tile_position, entities_by_name[entity.name])
 
-func on_entity_died(entity):
+func on_entity_died(entity: Entity):
 	set_cellv(entity.tile_position, TileMap.INVALID_CELL)
