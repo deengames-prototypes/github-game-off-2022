@@ -1,8 +1,10 @@
 class_name Slime
 
-extends Resource
+extends Entity
 
-const name := 'slime'
+func _init(x: int, y: int):
+	name = 'slime'
+	attack = 3
+	health = 500
+	tile_position = Vector2(x, y)
 
-var health: int = 500
-var tile_position: Vector2 = Vector2()

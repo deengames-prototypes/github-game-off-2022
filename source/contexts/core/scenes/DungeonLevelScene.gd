@@ -14,23 +14,19 @@ onready var _movement_system = MovementSystem.new(_terrain_tile_map, _entities)
 
 var _attack_system = AttackSystem.new()
 
-var _player: Player = Player.new()
+var _player: Player = Player.new(9, 8)
 var _entities: Array = [_player]
 
 func _ready():
 	_wire_up_signals()
 
-	_player.tile_position = Vector2(9, 8)
-
 	# Generate some slimes to kill
 	for i in range(4):
-		var slime = Slime.new()
-		slime.tile_position = Vector2(11, 8 + i)
+		var slime = Slime.new(11, 8 + i)
 		_entities.append(slime)
 
 	# Add the first (test) minion to follow the player around
-	var minion = Minion.new()
-	minion.tile_position = Vector2(8, 8)
+	var minion = Minion.new(8, 8)
 	_entities.append(minion)
 
 	_entities_tile_map.draw_entities(_entities)
@@ -55,6 +51,6 @@ func _wire_up_signals():
 	_attack_system.connect("entity_died", _minion_system, "on_entity_died")
 	add_child(_minion_system);
 
-func on_entity_died(entity):
+func on_entity_died(entity: Entity):
 	_entities.erase(entity)
 	_entities_tile_map.on_entity_died(entity)

@@ -10,6 +10,11 @@ config_version=4
 
 _global_script_classes=[ {
 "base": "Resource",
+"class": "Entity",
+"language": "GDScript",
+"path": "res://contexts/core/entities/Entity.gd"
+}, {
+"base": "Entity",
 "class": "Minion",
 "language": "GDScript",
 "path": "res://contexts/core/entities/Minion.gd"
@@ -19,17 +24,18 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://contexts/core/scripts/MovementChecker.gd"
 }, {
-"base": "Resource",
+"base": "Entity",
 "class": "Player",
 "language": "GDScript",
 "path": "res://contexts/core/entities/Player.gd"
 }, {
-"base": "Resource",
+"base": "Entity",
 "class": "Slime",
 "language": "GDScript",
 "path": "res://contexts/core/entities/Slime.gd"
 } ]
 _global_script_class_icons={
+"Entity": "",
 "Minion": "",
 "MovementCheck": "",
 "Player": "",

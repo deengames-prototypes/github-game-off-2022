@@ -9,10 +9,10 @@ func _init(terrain_tile_map: TileMap, all_entities: Array):
 	_terrain_tile_map = terrain_tile_map
 	_all_entities = all_entities
 
-func on_chase_entity(entity, target):
+func on_chase_entity(entity: Entity, target: Entity):
 	on_move_to(entity, target.tile_position)
 
-func on_move_to(entity, target_tile: Vector2):
+func on_move_to(entity: Entity, target_tile: Vector2):
 	var direction: Vector2 = entity.tile_position.direction_to(target_tile)
 
 	var displacement: Vector2
@@ -29,7 +29,7 @@ func on_move_to(entity, target_tile: Vector2):
 
 	move_entity(entity, displacement)
 
-func move_entity(entity, displacement: Vector2):
+func move_entity(entity: Entity, displacement: Vector2):
 	if displacement.length() > 1:
 		push_error("%s moved %s tiles, too far" % [entity.name, displacement.length()])
 	var old_tile_position = entity.tile_position

@@ -1,13 +1,14 @@
 class_name Minion
 
-extends Resource
+extends Entity
 
-const name := 'minion'
-enum {FOLLOWING, ATTACKING, IDLE}
+enum {FOLLOWING, ATTACKING}
 
 var state = FOLLOWING
-var target = null
+var target: Entity = null
 
-var attack: int = 10
-var health: int = 4
-var tile_position: Vector2 = Vector2()
+func _init(x: int, y: int):
+	name = 'minion'
+	attack = 10
+	health = 4
+	tile_position = Vector2(x, y)

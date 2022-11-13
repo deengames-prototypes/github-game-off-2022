@@ -22,7 +22,7 @@ func on_player_moved(player: Player, old_tile_position: Vector2, new_tile_positi
 		_bleeding_turns_left.erase(victim)
 
 # TODO: base class victim (not slime)
-func attack_entity(aggressor, victim, damage: int) -> int:
+func attack_entity(aggressor: Entity, victim: Entity, damage: int) -> int:
 	############### TODO: REMOVE, for testing only
 	if randf() < 0.25: add_bleeding(victim)
 	
