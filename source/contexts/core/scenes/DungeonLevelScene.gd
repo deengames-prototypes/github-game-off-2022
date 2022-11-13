@@ -26,8 +26,8 @@ func _ready():
 		_entities.append(slime)
 
 	# Add the first (test) minion to follow the player around
-	var minion = Minion.new(8, 8)
-	_entities.append(minion)
+	_entities.append(RangedMinion.new(8, 8))
+	_entities.append(MeleeMinion.new(7, 7))
 
 	_entities_tile_map.draw_entities(_entities)
 
